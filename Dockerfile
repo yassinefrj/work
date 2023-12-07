@@ -50,6 +50,8 @@ WORKDIR /www
 #copie tout mon projet laravel dans /www de l'image docker
 COPY . .
 
+EXPOSE 8069
+
 #host 0.0.0.0 = le serveur laravel est accessible en dehors du conteneur et depuis Windows également
 CMD php artisan migrate:fresh --seed && php artisan serve --host=0.0.0.0 --port=8069
 
