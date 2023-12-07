@@ -31,10 +31,10 @@ RUN composer install --no-scripts
 
 #auto deploy
 COPY .env.production.example .env
-CMD php artisan key:generate
 
 #copie tout mon projet laravel dans /www de l'image docker
 COPY . .
+RUN php artisan key:generate
 RUN npm install && npm run build
 RUN touch database/database.sqlite
 RUN touch database/test.sqlite
