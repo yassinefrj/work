@@ -51,5 +51,5 @@ WORKDIR /www
 COPY . .
 
 #host 0.0.0.0 = le serveur laravel est accessible en dehors du conteneur et depuis Windows également
-CMD php artisan migrate:fresh --seed && php artisan serve --host=0.0.0.0 --port=8000
+CMD php artisan migrate:fresh --seed && php artisan serve --host=0.0.0.0 --port=8069
 
