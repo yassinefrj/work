@@ -35,7 +35,7 @@ COPY .env.production.example .env
 #copie tout mon projet laravel dans /www de l'image docker
 COPY . .
 RUN php artisan key:generate
-RUN npm install && npm run build
+RUN npm install && npm run prod
 RUN touch database/database.sqlite
 RUN touch database/test.sqlite
 
