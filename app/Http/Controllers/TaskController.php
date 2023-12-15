@@ -9,8 +9,15 @@ use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 
+/**
+ * The TaskController class extends Laravel's base Controller class.
+ *  It is responsible for managing tasks, including viewing, creating, modifying, and handling task registrations.
+ */
 class TaskController extends Controller
 {
+    /**
+     * The getTasks method retrieves tasks for the authenticated user and renders a view to display them.
+     */
     public function getTasks()
     {
         $user = Auth::user();
@@ -18,6 +25,9 @@ class TaskController extends Controller
         return view('tasks.show_task', ['tasks' => $tasks]);
     }
 
+    /**
+     * The registerTask method handles task registration, updating participant counts, and returns JSON responses.
+     */
     public static function registerTask(Request $request)
     {
         try {
@@ -26,14 +36,10 @@ class TaskController extends Controller
                 $user = Auth::user();
                 Task::register($request->id_task,$user->id);
                 $people_count = Task::incrementPeopleCount($request->id_task);
-                return response()->json(["message"=>"Inscription enregistrée", "people_count"=>$people_count]);
-                //Participation::add($request->id_task, auth()->user()->id);
-                //Task::incrementPeopleCount($request->id_task);
-                //$checkParticipant = Task::check_nb_participation($request->id_task);
-                //$task = Task::find($request->id_task);
-                //$currentPeopleCount = $task->people_count;
-                //$min=$task->people_min;
-                //return response()->json(['message' => 'Inscription enregistrée', 'people_count' => $currentPeopleCount,'people_min'=>$min]);
+                $MinimumAtteined = Task::isMinimumAtteined($request->id_task);
+                return response()->json(["message"=>"Inscription enregistrée",
+                                            "people_count"=>$people_count,
+                                            "minimum_atteined"=>$MinimumAtteined]);
             }
             else
             {
@@ -44,6 +50,9 @@ class TaskController extends Controller
         }
     }
 
+    /**
+     * The unregisterTask method handles task unregistration, updating participant counts, and returns JSON responses.
+     */
     public static function unregisterTask(Request $request)
     {
         try {
@@ -52,7 +61,10 @@ class TaskController extends Controller
                 $user = Auth::user();
                 Task::unregister($request->id_task,$user->id);
                 $people_count = Task::decrementPeopleCount($request->id_task);
-                return response()->json(["message"=>"Désinscription enregistrée", "people_count"=>$people_count]);
+                $MinimumAtteined = Task::isMinimumAtteined($request->id_task);
+                return response()->json(["message"=>"Désinscription enregistrée",
+                                            "people_count"=>$people_count,
+                                            "minimum_atteined"=>$MinimumAtteined]);
             }
             else
             {
@@ -63,6 +75,9 @@ class TaskController extends Controller
         }
     }
 
+    /**
+     * The sortTask method sorts tasks based on various criteria and returns a JSON response.
+     */
     public static function sortTask(Request $request){
         $sortBy = $request->input('sortBy');
         $user = Auth::user();
@@ -114,11 +129,17 @@ class TaskController extends Controller
         return response()->json($sortedTasks);
     }
 
+    /**
+     * The createTask method renders the view for creating a new task.
+     */
     public function createTask() {
         $old["id"]=0;
         return view('tasks.create',['old'=>$old]);
     }
 
+    /**
+     * The storeTask method validates and stores a new task, rendering a view with validation confirmation.
+     */
     public function storeTask(Request $request) {
         $validatedData = $request->validate([
             'name' => ['required', 'max:30'],
@@ -135,7 +156,6 @@ class TaskController extends Controller
         $corrected_start_datetime = $this->correctDatetimeFormat($request->start_datetime);
         $corrected_end_datetime = $this->correctDatetimeFormat($request->end_datetime);
 
-        
             Task::create([
                 'name' => $validatedData['name'],
                 'description' => $validatedData['description'],
@@ -153,15 +173,24 @@ class TaskController extends Controller
         return view('tasks.create-validation', ['task_name' => $request->name, "old" => $old]);
     }
 
+    /**
+     *  It serves the purpose of formatting a datetime string by replacing the 'T' separator with a space
+     */
     private function correctDatetimeFormat($datetime) {
         return str_replace('T', ' ', $datetime);
     }
 
+    /**
+     * The modifyFormTask method renders the view for modifying an existing task.
+     */
     public function modifyFormTask($id){
         $task =Task::find($id);
         return view('tasks.create',['old'=>$task]);
     }
 
+    /**
+     * The modifyConfirmTask method validates and modifies an existing task, redirecting with a success message.
+     */
     public function modifyConfirmTask(Request $request){
         $validatedData = $request->validate([
             'name' => ['required', 'max:30'],
@@ -191,6 +220,9 @@ class TaskController extends Controller
             return redirect('/tasks')->with('success',$message);
     }
 
+    /**
+     * The increment method increments the participant count for a task.
+     */
     public function increment(Request $request)
     {
         $incremented = Task::incrementPeopleCount($request->id);
@@ -200,7 +232,7 @@ class TaskController extends Controller
     }
 
     /**
-    *participation information of a task by its ID.
+    * Get the participation information of a task by its ID.
     *
     * @param int $idTask The ID of the task
     * @return void Outputs JSON response with task details and participation information
@@ -214,7 +246,5 @@ class TaskController extends Controller
         $rep = Task::find($idTask)->users;
         return response()->json($rep);
     }
-
-    
 }
 

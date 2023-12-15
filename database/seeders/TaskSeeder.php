@@ -34,7 +34,7 @@ class TaskSeeder extends Seeder
         Task::create([
             'name' => 'Tâche 3',
             'description' => 'Description de la tâche 3',
-            'people_count' => 4,
+            'people_count' => 2,
             'start_datetime' => '2023-10-25 20:00:00',
             'end_datetime' => '2023-10-25 22:00:00',
             'address' => '425 NW 27th Avenue, Miami, FL 33125',
@@ -43,7 +43,7 @@ class TaskSeeder extends Seeder
         Task::create([
             'name' => 'Tâche 4',
             'description' => 'Description de la tâche 4',
-            'people_count' => 4,
+            'people_count' => 2,
             'start_datetime' => '2023-10-25 20:00:00',
             'end_datetime' => '2023-10-25 22:00:00',
             'address' => 'Rue Royale 67, 1000 Bruxelles',

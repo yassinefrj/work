@@ -33,12 +33,13 @@ class PersonalCalendarTest extends DuskTestCase
                 ->type('people_min', 3)
                 ->type('people_max', 6)
                 ->type('address', '123 Rue de Test, Ville Test')
+                ->screenshot('get rekt')
                 ->press('Submit')->assertSee('has successfully been added');
 
             $browser->visitRoute('tasks.index')
                 ->waitForTextIn('tr:first-child td:first-child', "Tâche 1")
                 // waiting for the AJAX script to finish
-                ->click('tr:nth-of-type(7) .button-register');
+                ->click('tr:nth-of-type(7) .button-register')->waitFor('td[data-task-id="7"] .button-unregister', 1);
                 // nth-of-type(7) because 6 provided by factory, 7th is the one we just added
 
             $browser->visit('/calendar')->assertSee('Nom de tâche');

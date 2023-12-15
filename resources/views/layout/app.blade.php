@@ -9,8 +9,16 @@
 
     <!-- Scripts -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        var currentUser = @json(auth()->user());
+    </script>
     <script src="{{ asset('js/Task.js') }}"></script>
     <script src="{{ asset('js/task_details.js') }}"></script>
+    <script src="{{ asset('js/group.js') }}"></script>
+    <script src="{{ asset('js/notification.js') }}"></script>
+    <script src="{{ asset('js/groupParticipation.js') }}"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 
     <!-- Style -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css">
@@ -34,7 +42,8 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
         <div class="container">
-            <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('img/Logo_Hand.svg') }}" alt="Mon Logo"></a>
+            <a class="navbar-brand" href="{{ route('home') }}"><img src="{{ asset('img/Logo_Hand.svg') }}"
+                    alt="Mon Logo"></a>
             <a class="navbar-brand" href="{{ route('calendar') }}">Calendar</a>
             @auth
             @if(Auth::user()->isAdmin())
@@ -44,6 +53,7 @@
                 </a>
                 <div class="dropdown-menu" aria-labelledby="tasksDropdownLink">
                     <a class="navbar-brand dropdown-item" href="{{ route('verify') }}">Verify users</a>
+                    <a class="navbar-brand dropdown-item" href="{{ route('report') }}">Report</a>
                 </div>
             </div>
             @endif
@@ -58,18 +68,28 @@
                     <a class="navbar-brand dropdown-item" href="{{ route('tasks.create') }}">Create task</a>
                 </div>
             </div>
-        
+
             <div class="dropdown groups-dropdown">
                 <a class="navbar-brand" href="#" role="button"
                     data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                     Group
+                    @if(auth()->check() && auth()->user()->isAdmin())
+                    <span id="groupNotificationBadge" class="badge badge-danger"></span>
+                    @endif
                 </a>
                 <div class="dropdown-menu" aria-labelledby="groupsDropdownLink">
                     <a class="navbar-brand dropdown-item" href="{{ route('groups.index') }}">Group list</a>
+                    @if(auth()->check() && auth()->user()->isAdmin())
                     <a class="navbar-brand dropdown-item" href="{{ route('groups.add_group') }}">Create Group</a>
+                    @endif
+                    <a class="navbar-brand dropdown-item" href="{{ route('groups.participants') }}">Group Participants
+                        @if(auth()->check() && auth()->user()->isAdmin())
+                        <span id="groupParticipationNotificationBadge" class="badge badge-danger"></span>
+                        @endif
+                    </a>
                 </div>
             </div>
-        
+
             <script>
                 $(document).ready(function() {
                     $('.dropdown').hover(function() {
@@ -80,18 +100,18 @@
                 });
             </script>
         </div>
-        
+
         @auth
             <!-- Settings Dropdown -->
             <div class="sm:flex sm:items-center sm:ml-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700">
+                            class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-black bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ml-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                         clip-rule="evenodd" />
@@ -124,11 +144,11 @@
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button
-                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-black dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700">
+                            class="inline-flex items-center px-3 py-2 text-sm font-medium leading-4 text-black bg-white border border-transparent rounded-md dark:text-gray-400 dark:bg-gray-800 hover:text-gray-700">
                             <div>Login</div>
 
                             <div class="ml-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <svg class="w-4 h-4 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd"
                                         d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
                                         clip-rule="evenodd" />
@@ -159,5 +179,15 @@
     </div>
     @stack('scripts')
 </body>
+<footer class="text-center text-muted">
+    <p>&copy; 2023 WorkTogether. All rights reserved.</p>
+</footer>
+<script>
+    $(document).ready(function() {
+        updateNotificationBadges();
+    });
+
+</script>
+
 
 </html>

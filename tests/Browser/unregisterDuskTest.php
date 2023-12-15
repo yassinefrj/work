@@ -2,16 +2,15 @@
 
 namespace Tests\Browser;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use Laravel\Dusk\Browser;
 use Tests\DuskTestCase;
 use App\Models\User;
+use Illuminate\Foundation\Testing\DatabaseTruncation;
 
 class unregisterDuskTest extends DuskTestCase
 {
 
-    use RefreshDatabase;
+    use DatabaseTruncation;
 
     public function setUp(): void
     {
@@ -36,7 +35,7 @@ class unregisterDuskTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/tasks')
-                ->waitFor('#tasks-body')
+                ->waitForTextIn('tr:first-child td:first-child', "Tâche 1")
                 ->assertSeeIn('#tasks-body', 'Register')
                 ->assertSeeIn('#tasks-body', 'Unregister')
                 ->assertSeeIn('#tasks-body', 'Maximum Reached');

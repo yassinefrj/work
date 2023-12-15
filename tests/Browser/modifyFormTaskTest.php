@@ -104,8 +104,8 @@ class modifyFormTaskTest extends DuskTestCase
                 ->type('end_datetime', '10:00')
                 ->type('address', 'rue royale 107')
                 ->press('Submit')
-                ->storeConsoleLogOnFailure() // FIXME: this function doesn't exist ?
                 ->visit('/tasks')
+                ->waitForTextIn('tr:first-child td:first-child', "Tâche 1")
                 ->assertSee('Tâche 100');
 
         });

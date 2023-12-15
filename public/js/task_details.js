@@ -1,5 +1,5 @@
-function showTaskDetails(name, description, peopleCount, Sdate, Edate, addr,min,max) {
-    
+function showTaskDetails(name, description, peopleCount, Sdate, Edate, addr, min, max) {
+
     $('#taskDetails').empty();
 
     $('#taskDetails').append(`<strong>Name:</strong> ${name}<br>`);
@@ -14,31 +14,36 @@ function showTaskDetails(name, description, peopleCount, Sdate, Edate, addr,min,
     $("#modalDetails").modal("show");
 }
 
-
-
-function listTaskDetail(idTask){
-
+function listTaskDetail(idTask) {
     $.ajax({
         url: `api/tasks/personList/${idTask}`,
         type: 'GET',
         dataType: 'json',
-        success: function(data) {
-
+        success: function (data) {
             $('#pearson_list').empty();
 
-            data.forEach(function(task) {
+            data.forEach(function (task) {
+                console.log(task);
                 const newRow = $('<tr></tr>');
                 newRow.append(`<td scope="row" class="text-center">${task.name}</td>`);
                 newRow.append(`<td scope="row" class="text-center">${task.email}</td>`);
+
+                // if the current user is admin create button go to the page of information for the users
+                if(currentUser.isAdmin){
+                    const buttonCell = $('<td class="text-center"></td>');
+                    const link = document.createElement('a');
+                    link.textContent= "Detail";
+                    link.className="btn btn-outline-info";
+                    link.href="/user/"+task.id;
+                    buttonCell.append(link);
+                    newRow.append(buttonCell);
+                }
+
                 $('#pearson_list').append(newRow);
             });
-            
-
         },
-        error: function(xhr, status, error) {
-          console.error('Error with the ajax request:', status, error);
+        error: function (xhr, status, error) {
+            console.error('Error with the ajax request:', status, error);
         }
-      });
-      
-    
+    });
 }

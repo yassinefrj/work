@@ -27,9 +27,10 @@ class GroupDuskTest extends DuskTestCase
     {
         $this->browse(function (Browser $browser) {
             $browser->visit('/groups')
-                    ->assertsee('Group list')
-                    ->assertSee('name')
-                    ->assertSee('Description');
+                ->pause(2000)
+                ->assertsee('Group list')
+                ->assertSee('Name')
+                ->assertSee('Description');
         });
     }
 
@@ -47,11 +48,11 @@ class GroupDuskTest extends DuskTestCase
                 'name' => $groupName,
             ]);
 
-            $browser->visit('/add_group') 
+            $browser->visit('/add_group')
                 ->type('name', $groupName)
                 ->type('description', 'Another Test Group Description')
                 ->press('submit')
-                ->assertSee('The name has already been taken'); 
+                ->assertSee('The name has already been taken');
         });
     }
 
@@ -59,52 +60,55 @@ class GroupDuskTest extends DuskTestCase
     /**
      * Test for inserting a group
      */
-    public function test_insert_group(){
+    public function test_insert_group()
+    {
         $this->browse(function (Browser $browser) {
             $browser->visit('/add_group')
-                    ->type('name', 'Group 3') 
-                    ->type('description', 'This is a test group description') 
-                    ->press('submit') 
-                    ->assertSee('Group 3') 
-                    ->assertSee('This is a test group description'); 
+                ->type('name', 'Group 3')
+                ->type('description', 'This is a test group description')
+                ->press('submit');
+            $browser->visit('/groups')
+                ->pause(2000)
+                ->assertSee('Group 3')
+                ->assertSee('This is a test group description');
         });
     }
 
     /**
      * Test for checking visibility of elements for inserting a group
      */
-    public function test_show_element_insert(){
+    public function test_show_element_insert()
+    {
         $this->browse(function (Browser $browser) {
             $browser->visit('/add_group')
-                ->assertVisible('input[name="name"]') 
-                ->assertVisible('textarea[name="description"]') 
-                ->assertVisible('button[type="submit"]'); 
+                ->assertVisible('input[name="name"]')
+                ->assertVisible('textarea[name="description"]')
+                ->assertVisible('button[type="submit"]');
         });
     }
 
     /**
      * Test for validation errors when submitting without filling in required fields.
      */
-    public function test_validation_errors(){
+    public function test_validation_errors()
+    {
         $this->browse(function (Browser $browser) {
             $browser->visit('/add_group')
                 ->press('submit')
-                ->assertSourceMissing('Veuillez renseigner ce champ');
+                ->assertSourceMissing('Veuillez renseigner ce champ.');
         });
     }
 
     /**
      * Test for validation error when the 'description' field is left empty.
      */
-    public function test_validation_error_when_description_is_empty(){
-        $this->browse(function (Browser $browser){
+    public function test_validation_error_when_description_is_empty()
+    {
+        $this->browse(function (Browser $browser) {
             $browser->visit('/add_group')
-            ->type('name', 'group 4')
-            ->press('submit')
-            ->assertSourceMissing('Veuillez renseigner ce champ');
+                ->type('name', 'group 4')
+                ->press('submit')
+                ->assertSourceMissing('Veuillez renseigner ce champ.');
         });
     }
-
-    
-
 }

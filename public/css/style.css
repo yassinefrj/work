@@ -1,85 +1,163 @@
 button {
-  border-color: #000000;
-  border: 1px solid;
-  border-radius: .25rem;
+    border-color: #000000;
+    border: 1px solid;
+    border-radius: 0.25rem;
 }
 
 .button-signUp {
-  background-color: #d4d4d4;
-  cursor: pointer;
+    background-color: #d4d4d4;
+    cursor: pointer;
 }
 
 .button-signUp:hover {
-  background-color: #ffffff;
-  border-color: #0a58ca;
-  color: #0a58ca;
+    background-color: #ffffff;
+    border-color: #0a58ca;
+    color: #0a58ca;
 }
 
 .button-signUp:active {
-  background-color: #0a58ca;
-  border-color: #ffffff;
-  color: #ffffff;
+    background-color: #0a58ca;
+    border-color: #ffffff;
+    color: #ffffff;
 }
 
-.button-register{
-  background: green;
-}
-.button-unregister{
-  background:red;
+.button-registered {
+    background-color: green;
 }
 
 .video-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 img {
-  height: 100px;
-  width: 100px;
+    height: 100px;
+    width: 100px;
 }
 
 .autocomplete-container {
-  margin-bottom: 20px;
+    margin-bottom: 20px;
 }
 
 .input-container {
-  display: flex;
-  position: relative;
+    display: flex;
+    position: relative;
 }
 
 .input-container input {
-  flex: 1;
-  outline: none;
-  
-  border: 1px solid rgba(0, 0, 0, 0.2);
-  padding: 10px;
-  padding-right: 31px;
-  font-size: 16px;
+    flex: 1;
+    outline: none;
+
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    padding-right: 31px;
+    font-size: 16px;
 }
 
 .autocomplete-items {
-  position: absolute;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.1);
-  border-top: none;
-  background-color: #fff;
+    position: absolute;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0px 2px 10px 2px rgba(0, 0, 0, 0.1);
+    border-top: none;
+    background-color: #fff;
 
-  z-index: 99;
-  top: calc(100% + 2px);
-  left: 0;
-  right: 0;
+    z-index: 99;
+    top: calc(100% + 2px);
+    left: 0;
+    right: 0;
 }
 
 .autocomplete-items div {
-  padding: 10px;
-  cursor: pointer;
+    padding: 10px;
+    cursor: pointer;
 }
 
 .autocomplete-items div:hover {
-  /*when hovering an item:*/
-  background-color: rgba(0, 0, 0, 0.1);
+    /*when hovering an item:*/
+    background-color: rgba(0, 0, 0, 0.1);
 }
-.text-error{
-  background-color: red;
+
+.text-danger {
+    background-color: #d01515;
+    font-weight: bold;
+}
+.table-row-danger {
+    background-color: #ffe8e8;
+}
+
+/********  BUTTON STYLE ********/
+
+.button-unregister {
+    appearance: none;
+    background-color: #d01515;
+    border: 1px solid rgba(27, 31, 35, 0.15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 6px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.button-unregister:hover {
+    background-color: #bc1b1b;
+}
+
+.button-unregister:active {
+    background-color: #e01717;
+    box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}
+
+.button-register {
+    appearance: none;
+    background-color: #2ea44f;
+    border: 1px solid rgba(27, 31, 35, 0.15);
+    border-radius: 6px;
+    box-shadow: rgba(27, 31, 35, 0.1) 0 1px 0;
+    box-sizing: border-box;
+    color: #fff;
+    cursor: pointer;
+    display: inline-block;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    padding: 6px 16px;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    user-select: none;
+    -webkit-user-select: none;
+    touch-action: manipulation;
+    vertical-align: middle;
+    white-space: nowrap;
+}
+
+.button-register:hover {
+    background-color: #2c974b;
+}
+
+.button-register:active {
+    background-color: #298e46;
+    box-shadow: rgba(20, 70, 32, 0.2) 0 1px 0 inset;
+}
+
+#users_infos {
+  margin: 3em 0em;
+}
+
+#users_infos h2 {
+  padding: 1em 0em;
 }

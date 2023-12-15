@@ -64,4 +64,27 @@ class CalendarTest extends TestCase
 
         $this->assertEquals($expectedEvents, $viewData);
     }
+
+    /**
+     * Test the download endpoint of the CalendarController.
+     *
+     * This test ensures that when a user with isAdmin property set to true
+     * requests the calendar download endpoint, the response contains the
+     * correct HTTP status code, Content-Type header, and Content-Disposition header.
+     *
+     * @return void
+     */
+    public function test_download(): void
+    { {
+            // Assuming you have a user with isAdmin property set to true
+            $user = User::factory()->create(['isAdmin' => true]);
+
+            $response = $this->actingAs($user)->get(route('calendar.download') . '?user=' . $user->id);
+
+
+            $response->assertStatus(200)
+                ->assertHeader('Content-Type', 'text/calendar; charset=UTF-8')
+                ->assertHeader('Content-Disposition', 'attachment; filename="' . $user->name . '_event.ics"');
+        }
+    }
 }

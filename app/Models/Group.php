@@ -8,9 +8,14 @@ use Illuminate\Database\Eloquent\Model;
 class Group extends Model
 {
     use HasFactory;
-    public $timestamps = false; 
+    public $timestamps = false;
     protected $fillable = [
         'name',
         'description',
     ];
+    
+    public function groupParticipations()
+    {
+        return $this->hasMany(GroupParticipation::class);
+    }
 }

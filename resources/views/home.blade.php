@@ -3,7 +3,7 @@
 @section('content')
 <div class="container mt-4">
     <div class="jumbotron">
-        <h1 class="display-4">Welcome to the Worktogether app </h1>
+        <h1 class="display-4">Welcome to the Worktogether app</h1>
         <p class="lead my-4">Sync, Collaborate, Succeed: WorkTogether Paves the Way!</p>
         @guest
         <a class="btn btn-primary btn-lg mr-3" href="{{ route('register') }}">Register</a>

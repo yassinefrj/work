@@ -53,4 +53,21 @@ class CalendarDuskTest extends DuskTestCase
                 ->assertSee('Tâche 1');
         });
     }
+    /**
+     * Dusk test to verify that clicking the copy button displays the success message.
+     *
+     * This test ensures that when a user clicks the copy button on the calendar page,
+     * the expected success message is displayed.
+     *
+     * @return void
+     */
+    public function testCopyButtonShowsSuccessMessage()
+    {
+        $this->browse(function (Browser $browser) {
+            $browser->visit(route('calendar')) // Update with the actual URL or route
+                ->click('#copyIcsButton') // Update with the actual button ID or selector
+                ->waitForText('The link has been successfully copied to your clipboard.')
+                ->assertSee('The link has been successfully copied to your clipboard.');
+        });
+    }
 }

@@ -4,8 +4,11 @@ use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\TaskController;
 use App\Http\Controllers\MapsController;
 use App\Http\Controllers\GroupController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\GroupParticipationController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\VerifyUserController;
 
 /*
@@ -41,9 +44,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/tasks/store', [TaskController::class, 'storeTask'])->name('tasks.store');
     Route::post('/tasks', [TaskController::class, 'registerTask'])->name('signInTask');
     Route::post('/tasks/modify', [TaskController::class, 'modifyConfirmTask'])->name('tasks.modify.confirm');
-    Route::post('/tasks/register', [TaskController::class,'registerTask'])->name('tasks.register');
-    Route::post('/tasks/unregister', [TaskController::class,'unregisterTask'])->name('tasks.unregister');
-    Route::post('/tasks/sort',[TaskController::class, 'sortTask'])->name('tasks.sort');
+    Route::post('/tasks/register', [TaskController::class, 'registerTask'])->name('tasks.register');
+    Route::post('/tasks/unregister', [TaskController::class, 'unregisterTask'])->name('tasks.unregister');
+    Route::post('/tasks/sort', [TaskController::class, 'sortTask'])->name('tasks.sort');
 
     Route::get('/tasks/{id}', [TaskController::class, 'modifyFormTask'])->name('tasks.modify');
 
@@ -61,6 +64,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/verify', [VerifyUserController::class, 'getUnverifiedUsers'])->middleware('admin')->name('verify');
         Route::patch('/verify', [VerifyUserController::class, 'verifyUser'])->name('verify.add');
         Route::delete('/verify', [VerifyUserController::class, 'refuseUser'])->name('verify.delete');
+        Route::get('/report', [ReportController::class, 'reports'])->name('report');
+        Route::get('/report/csv', [ReportController::class, 'exportCSV'])->name('report.csv');
     });
 
 
@@ -75,19 +80,24 @@ Route::middleware(['auth', 'verified'])->group(function () {
     })->name('groups.add_group');
 
     Route::post('/add_group', [GroupController::class, 'add_group'])->name('groups.insert');
+    Route::get('/groups/participants', function () {
+        return view('groups.show_group_participants');
+    })->name('groups.participants')->middleware(['auth']);
 
 
     /* MAPS INTEGRATION */
 
     Route::get('/maps/{type}/{address}', [MapsController::class, 'redirectToMaps'])->name('maps');
+
+    /* USERS DETAILS */
+    Route::get('/user/{id}', [UserController::class, 'getUser'])->name('user.detail')->middleware('admin');
 });
 
+Route::get('/calendar/download', [CalendarController::class, 'download'])->name('calendar.download');
 
 Route::get('/', function () {
     return view('home');
 })->name('home');
-
-
 
 require __DIR__ . '/sso.php';
 require __DIR__ . '/auth.php';

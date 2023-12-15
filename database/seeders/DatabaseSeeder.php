@@ -14,10 +14,10 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             TaskSeeder::class,
-            ParticipationSeeder::class,
             GroupSeeder::class,
             UserSeeder::class,
             TaskUserTableSeeder::class,
+            // GroupParticipationSeeder::class,
         ]);
     }
 }

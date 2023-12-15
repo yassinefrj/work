@@ -25,7 +25,8 @@ class User extends Authenticatable
         'google_id',
         'microsoft_id',
         'isAdmin',
-        'is_verified'
+        'avatar_path',
+        'is_verified',
     ];
 
     /**
@@ -56,6 +57,13 @@ class User extends Authenticatable
         return $this->belongsToMany(Task::class, 'task_user', 'id_user', 'id_task');
     }
 
+
+    public function groupParticipations()
+    {
+        return $this->hasMany(GroupParticipation::class);
+    }
+
+
     public function isAdmin()
     {
         return $this->isAdmin;
@@ -74,7 +82,7 @@ class User extends Authenticatable
             )
         );
     }
-    
+
     public static function deleteUser($id)
     {
         User::where('id', $id)->delete();

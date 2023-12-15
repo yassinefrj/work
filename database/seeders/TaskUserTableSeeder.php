@@ -29,6 +29,27 @@ class TaskUserTableSeeder extends Seeder
         ]);
 
         DB::table('task_user')->insert([
+            'id_user' => 2,
+            'id_task' => 2,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('task_user')->insert([
+            'id_user' => 1,
+            'id_task' => 3,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('task_user')->insert([
+            'id_user' => 2,
+            'id_task' => 4,
+            'created_at' => now(),
+            'updated_at' => now(),
+        ]);
+
+        DB::table('task_user')->insert([
             'id_user' => 1,
             'id_task' => 5,
             'created_at' => now(),
@@ -36,8 +57,8 @@ class TaskUserTableSeeder extends Seeder
         ]);
 
         DB::table('task_user')->insert([
-            'id_user' => 2,
-            'id_task' => 6,
+            'id_user' => 1,
+            'id_task' => 4,
             'created_at' => now(),
             'updated_at' => now(),
         ]);

@@ -13,7 +13,8 @@
         "laravel/socialite": "^5.9",
         "laravel/tinker": "^2.8",
         "socialiteproviders/google": "*",
-        "socialiteproviders/microsoft": "^4.2"
+        "socialiteproviders/microsoft": "^4.2",
+        "spatie/icalendar-generator": "^2.5"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",

@@ -45,6 +45,26 @@ class Task extends Model
 	                        FROM tasks
 	                        left JOIN task_user on tasks.id = task_user.id_task
                             where task_user.id_user = ?;", [$id]);
+
+    }
+
+    public static function getUsersTasksDataForCSV()
+    {
+        return DB::select("SELECT
+                                users.id AS user_id,
+                                users.name AS user_name,
+                                users.email AS user_email,
+                                tasks.id AS task_id,
+                                tasks.name AS task_name,
+                                tasks.description AS task_description,
+                                tasks.start_datetime AS task_start_datetime,
+                                tasks.end_datetime AS task_end_datetime
+                            FROM
+                                users
+                            LEFT JOIN
+                                task_user ON task_user.id_user = users.id
+                            LEFT JOIN
+                                tasks ON task_user.id_task = tasks.id;");
     }
 
     /**
@@ -57,11 +77,15 @@ class Task extends Model
 
     public static function getAllTasksForUser($id_user)
     {
-        return self::select('tasks.*', 'task_user.id_task', 'task_user.id_user',
+            return self::select('tasks.*', 'task_user.id_task', 'task_user.id_user',
             DB::raw("CASE 
                         WHEN task_user.id_user IS NOT NULL THEN 'Inscrit'
                         ELSE 'Non Inscrit'
-                        END as StatusInscription"))
+                        END as StatusInscription"),
+            DB::raw("CASE 
+                        WHEN tasks.people_count < tasks.people_min THEN 'Non'
+                        ELSE 'Oui'
+                        END as MinimumAtteined"))          
             ->leftJoin('task_user', function ($join) use ($id_user) {
                 $join->on('tasks.id', '=', 'task_user.id_task')
                     ->where('task_user.id_user', '=', $id_user);
@@ -124,12 +148,24 @@ class Task extends Model
 
     public static function getDetailParticipation($idTask)
     {
-        $participations = DB::table('participations')
-            ->join('users', 'participations.id_user', '=', 'users.id')
-            ->select('users.name', 'users.email')
+        $participations = DB::table('task_user')
+            ->join('users', 'task_user.id_user', '=', 'users.id')
+            ->select('users.id', 'users.name', 'users.email')
             ->where('id_task', '=', $idTask)
             ->get();
 
         return $participations;
+    }
+
+    public static function isMinimumAtteined($idTask)
+    {
+        $task = self::select(
+            DB::raw("CASE 
+                            WHEN people_count < people_min THEN 'Non'
+                            ELSE 'Oui'
+                            END as MinimumAtteined"))
+            ->where('id', $idTask)
+            ->first();
+        return $task->MinimumAtteined;
     }
 }
