@@ -14,7 +14,7 @@
     </script>
     <script src="{{ asset('js/Task.js') }}"></script>
     <script src="{{ asset('js/task_details.js') }}"></script>
-    <script src="{{ asset('js/group.js') }}"></script>
+    <script src="{{ asset('js/Group.js') }}"></script>
     <script src="{{ asset('js/notification.js') }}"></script>
     <script src="{{ asset('js/groupParticipation.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
