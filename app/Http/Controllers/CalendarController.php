@@ -14,10 +14,6 @@ use Spatie\IcalendarGenerator\Components\Calendar;
 
 class CalendarController extends Controller
 {
-    public function __construct()
-    {
-        $this->middleware('auth');
-    }
     /**
      * The __invoke method is responsible for fetching tasks based on the user's role (admin or regular user),
      *  processing them,
