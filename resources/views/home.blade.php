@@ -15,6 +15,7 @@
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen></iframe>
         </div>
+        <p>Made by Yassine FERRAJ team group</p>
         @endguest
 
         @auth
